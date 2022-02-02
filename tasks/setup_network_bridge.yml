@@ -1,0 +1,23 @@
+- name: Install bridge-utils
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "bridge-utils"
+
+- name: Deinstall dhcpcd5
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - "dhcpcd5"
+  when: bridge_interface_method == 'static'
+
+- name: template /etc/network/interfaces
+  ansible.builtin.template:
+    src: interfaces.j2
+    dest: /etc/network/interfaces
+    mode: 0644
+    owner: root
+    group: root
+...

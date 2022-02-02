@@ -1,0 +1,88 @@
+---
+# tasks file for pivccu
+
+- name: include setup network bridge tasks
+  ansible.builtin.include_tasks: setup_network_bridge.yml
+
+- name: Add piVCCU apt key
+  ansible.builtin.apt_key:
+    url: "{{ pivccu_apt_key }}"
+    state: present
+
+- name: Add specified repository into sources list
+  ansible.builtin.apt_repository:
+    repo: "deb {{ pivccu_repo_url }} stable main"
+    state: present
+
+- name: Install the build packages for kernel module build
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "build-essential"
+    - "bison"
+    - "flex"
+    - "libssl-dev"
+
+- name: Install the needed kernel modules and headers
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "raspberrypi-kernel-headers"
+    - "pivccu-modules-dkms"
+    - "pivccu-modules-raspberrypi"
+
+- name: Install the neccessary support package for HB-RF-ETH
+  ansible.builtin.package:
+    name: "hb-rf-eth"
+    state: present
+  when: pivccu_hw_hb-rf-eth
+
+- name: disable hciuart service
+  ansible.builtin.systemd:
+    name: "hciuart.service"
+    enabled: false
+    state: stopped
+
+- name: disable bluetooth via device tree
+  ansible.builtin.lineinfile:
+    path: "/boot/config.txt"
+    line: dtoverlay=pi3-disable-bt
+    state: present
+
+- name: disable serial console
+  ansible.builtin.replace:
+    path: /boot/cmdline.txt
+    backup: true
+    regexp: "{{ item }}"
+  with_items:
+    - 'console=serial0,[0-9]\+ '
+    - 'console=ttyAMA0,[0-9]\+ '    
+
+- name: reboot machine
+  ansible.builtin.reboot:
+
+- name: install piVCCU package
+  ansible.builtin.package:
+    name: "{{ pivccu_pkg }}"
+    state: present
+
+- name: get pivccu-info
+  ansible.builtin.command: /usr/sbin/pivccu-info
+  changed_when: false
+  register: result
+
+- name: output the pivccu-info
+  ansible.builtin.debug:
+    var: result
+
+- name: create backup cronjob
+  ansible.builtin.cron:
+    name: "backup pivccu"
+    minute: "0"
+    hour: "0"
+    job: '/usr/sbin/pivccu-backup {{ pivccu_backup_path }} && find {{ pivccu_backup_path }} -name "{{ pivccu_pkg }}_*" -ctime +3 -exec rm -f {} \;'
+    user: root
+  when: pivccu_create_backup_job
+...

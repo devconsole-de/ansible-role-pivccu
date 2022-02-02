@@ -1,0 +1,7 @@
+---
+# vars file for pivccu
+pivccu_pkg: 'pivccu3' # 'pivccu' for CCU version 2
+pivccu_create_backup_job: true
+pivccu_backup_path: '/var/backups'
+pivccu_hb_rf_eth: false
+bridge_interface_method: 'dhcp'

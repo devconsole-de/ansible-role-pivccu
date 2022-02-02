@@ -1,0 +1,25 @@
+source-directory /etc/network/interfaces.d
+
+auto lo
+iface lo inet loopback
+
+iface eth0 inet manual
+
+auto br0
+{%- if bridge_interface_method == 'static'%}
+iface br0 inet static
+  bridge_ports eth0
+  address {{ bridge_ip }}
+  netmask {{ bridge_netmask }}
+  gateway {{ bridge_gateway }}
+  {%- if iterable(bridge_nameserver) %}
+  {%- if bridge_nameserver|length > 1 %}
+  dns-nameservers {{ bridge_nameserver[0] }} {{ bridge_nameserver[1] }}
+  {%- else %}
+  dns-nameservers {{ bridge_nameserver[0] }}
+  {%- endif %}
+  {%- endif %}
+{%- else%}
+iface br0 inet dhcp
+  bridge_ports eth0
+{%- endif %}

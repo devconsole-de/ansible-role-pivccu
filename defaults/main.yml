@@ -1,0 +1,5 @@
+---
+# defaults file for pivccu
+pivccu_apt_key: "https://www.pivccu.de/piVCCU/public.key"
+pivccu_repo_url: "https://www.pivccu.de/piVCCU"
+pivccu_apt_suite: "stable"
