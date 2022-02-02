@@ -1,0 +1,5 @@
+---
+# vars file for pivccu
+pivccu_pkg: 'pivccu3' # 'pivccu' for CCU version 2
+pivccu_configure_network_bridge: false
+pivccu_create_backup_job: true
