@@ -3,5 +3,12 @@
 pivccu_pkg: 'pivccu3' # 'pivccu' for CCU version 2
 pivccu_create_backup_job: true
 pivccu_backup_path: '/var/backups'
-pivccu_hb_rf_eth: false
-bridge_interface_method: 'dhcp'
+pivccu_hw_hb_rf_eth: false # set to true if you are using the HB-RF-ETH board
+bridge_interface_method: 'dhcp' # 'static' for manual ip configuration
+# bridge network configuration - it is used when bridge_interface_method = 'static'
+bridge_ip: "192.168.2.100"
+bridge_netmask: "255.255.255.0"
+bridge_gateway: "192.168.2.1"
+bridge_nameserver:
+  - "192.168.2.1"
+  - "8.8.8.8"

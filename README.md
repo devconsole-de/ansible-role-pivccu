@@ -13,11 +13,12 @@ You can find further [prerequisites here](https://github.com/alexreinert/piVCCU/
 
 default variables in `defaults/main.yml`:
 
-| Variable         | Value                                     |
-|------------------|-------------------------------------------|
-| pivccu_apt_key   | 'https://www.pivccu.de/piVCCU/public.key' |
-| pivccu_repo_url  | 'https://www.pivccu.de/piVCCU'            |
-| pivccu_apt_suite | 'stable' # 'testing' as alternative       | 
+| Variable          | Value                                     |
+|-------------------|-------------------------------------------|
+| pivccu_apt_key    | 'https://www.pivccu.de/piVCCU/public.key' |
+| pivccu_repo_url   | 'https://www.pivccu.de/piVCCU'            |
+| pivccu_apt_suite  | 'stable' # 'testing' as alternative       |
+
 
 ---------------
 
@@ -30,10 +31,14 @@ variables in `vars/main.yml`:
 | pivccu_create_backup_job        | 'true'                                           |
 | pivccu_backup_path              | '/var/backups'                                   |
 | bridge_interface_method         | 'dhcp' # 'static' (needs IP configuration - s.b.)|
+| bridge_ip                       | "192.168.2.100"                                  |
+| bridge_netmask                  | "255.255.255.0"                                  |
+| bridge_gateway                  | "192.168.2.1"                                    |
+| bridge_nameserver               | ["192.168.2.1","8.8.8.8"]                        |
 
 ---------------
 
-When `bridge_interface_method` is set to `static`, you also have to set additional variables for templating the network bridge interface configuration in `/etc/network/interfaces`.
+When `bridge_interface_method` is set to `static`, you maybe have to adjust these additional variables for templating the network bridge interface configuration in `/etc/network/interfaces`.
 
 - bridge_ip 
 - bridge_netmask # like 255.255.255.0 
@@ -54,7 +59,7 @@ None.
     - dabo_devconsole.pivccu
     vars:
       bridge_interface_method: "static"
-      bridge_ip: "192.168.2.10"
+      bridge_ip: "192.168.2.100"
       bridge_netmask: "255.255.255.0"
       bridge_gateway: "192.168.2.1"
 

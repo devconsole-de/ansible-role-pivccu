@@ -37,7 +37,7 @@
   ansible.builtin.package:
     name: "hb-rf-eth"
     state: present
-  when: pivccu_hw_hb-rf-eth
+  when: pivccu_hw_hb_rf_eth
 
 - name: disable hciuart service
   ansible.builtin.systemd:
