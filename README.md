@@ -9,6 +9,10 @@ It is designed for ARM based single board computers like the RaspberryPi.
 Currently this role is tested on a Raspberry Pi 3 Model B with the [HM-MOD-RPI-PCB](https://de.elv.com/elv-homematic-komplettbausatz-funkmodul-fuer-raspberry-pi-hm-mod-rpi-pcb-fuer-smart-home-hausautomation-142141) connected via GPIO.
 You can find further [prerequisites here](https://github.com/alexreinert/piVCCU/#prequisites).
 
+# Installation
+
+`ansible-galaxy install devconsole.pivccu`
+
 # Role Variables
 
 default variables in `defaults/main.yml`:
@@ -56,7 +60,7 @@ None.
     remote_user: pi
     become: true
     roles:
-    - dabo_devconsole.pivccu
+    - devconsole.pivccu
     vars:
       bridge_interface_method: "static"
       bridge_ip: "192.168.2.100"
